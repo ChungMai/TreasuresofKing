@@ -19,7 +19,7 @@ class GameObjectNode : SKNode{
     }
     
     
-    func handleInput(inputHelper: InputHelper) {
+    func handleInput(_ inputHelper: InputHelper) {
         for obj in children {
             if let node = obj as? GameObjectNode {
                 node.handleInput(inputHelper)
@@ -27,7 +27,7 @@ class GameObjectNode : SKNode{
         }
     }
     
-    func updateDelta(delta: NSTimeInterval) {
+    func updateDelta(_ delta: TimeInterval) {
         for obj in children {
             if let node = obj as? GameObjectNode {
                 node.updateDelta(delta)

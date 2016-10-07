@@ -8,6 +8,26 @@
 
 import Foundation
 import SpriteKit
+func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 func randomDouble() -> Double {
     return Double(arc4random()) / Double(UInt32.max)
@@ -44,41 +64,41 @@ class GameWorld : GameObjectNode, SKPhysicsContactDelegate{
         let floor = SKNode()
         floor.position.y = -400
         var square = CGSize(width:GameScene.world.size.width, height: 200)
-        floor.physicsBody = SKPhysicsBody(rectangleOfSize:  square)
-        floor.physicsBody?.dynamic = false
+        floor.physicsBody = SKPhysicsBody(rectangleOf:  square)
+        floor.physicsBody?.isDynamic = false
         addChild(floor)
         
         let ceiling = SKNode()
         ceiling.position.y = 800
         square = CGSize(width: GameScene.world.size.width, height: 200)
-        ceiling.physicsBody = SKPhysicsBody(rectangleOfSize: square)
-        ceiling.physicsBody?.dynamic = false
+        ceiling.physicsBody = SKPhysicsBody(rectangleOf: square)
+        ceiling.physicsBody?.isDynamic = false
         addChild(ceiling)
         
         let leftSideWall = SKNode()
         leftSideWall.position.x = -340
         square = CGSize(width: 100, height: GameScene.world.size.height)
-        leftSideWall.physicsBody = SKPhysicsBody(rectangleOfSize: square)
-        leftSideWall.physicsBody?.dynamic = false
+        leftSideWall.physicsBody = SKPhysicsBody(rectangleOf: square)
+        leftSideWall.physicsBody?.isDynamic = false
         addChild(leftSideWall)
         
         let rightSideWall = SKNode()
         rightSideWall.position.x = 340
         square = CGSize(width: 100, height: size.height)
-        rightSideWall.physicsBody = SKPhysicsBody(rectangleOfSize: square)
-        rightSideWall.physicsBody?.dynamic = false
+        rightSideWall.physicsBody = SKPhysicsBody(rectangleOf: square)
+        rightSideWall.physicsBody?.isDynamic = false
         addChild(rightSideWall)
         
         self.addChild(treasures)
         
-        let dropTreasureAction = SKAction.runBlock({
+        let dropTreasureAction = SKAction.run({
             let r: UInt32 = 5 + UInt32(self.counter)/10
             self.treasures.addChild(Treasure(range: r))
             self.counter += 1
         })
         
-        let seq = SKAction.sequence([dropTreasureAction, SKAction.waitForDuration(2)])
-         totalAction = SKAction.repeatActionForever(seq)
+        let seq = SKAction.sequence([dropTreasureAction, SKAction.wait(forDuration: 2)])
+         totalAction = SKAction.repeatForever(seq)
         
         let chimney = SKSpriteNode(imageNamed: "spr_chimney")
         chimney.zPosition = 10
@@ -96,11 +116,11 @@ class GameWorld : GameObjectNode, SKPhysicsContactDelegate{
         addChild(helpButton)
         
         helpframe.zPosition = 20
-        helpframe.hidden = true
+        helpframe.isHidden = true
         addChild(helpframe)
         
         gameover.zPosition = Layer.Overlay2
-        gameover.hidden = true
+        gameover.isHidden = true
         addChild(gameover)
         
         var scorePos = leftRight()
@@ -119,34 +139,34 @@ class GameWorld : GameObjectNode, SKPhysicsContactDelegate{
     }
     
     
-    override func handleInput(inputHelper : InputHelper)
+    override func handleInput(_ inputHelper : InputHelper)
     {
         
-        if !titleScreen.hidden {
+        if !titleScreen.isHidden {
             if inputHelper.hasTapped {
-                titleScreen.hidden = true
-                self.runAction(self.totalAction!)
+                titleScreen.isHidden = true
+                self.run(self.totalAction!)
                 return
             }
             
         }
-        if !gameover.hidden{
+        if !gameover.isHidden{
             if inputHelper.hasTapped{
-                gameover.hidden = true
+                gameover.isHidden = true
                 self.reset()
-                self.runAction(self.totalAction!)
+                self.run(self.totalAction!)
                 return
             }
         }
         helpButton.handleInput(inputHelper)
         if(helpButton.tapped){
-            if helpframe.hidden{
-                helpframe.hidden = false
+            if helpframe.isHidden{
+                helpframe.isHidden = false
                 self.removeAllActions()
             }
             else{
-                helpframe.hidden = true
-                self.runAction(self.totalAction!)
+                helpframe.isHidden = true
+                self.run(self.totalAction!)
             }
             
             return
@@ -156,8 +176,8 @@ class GameWorld : GameObjectNode, SKPhysicsContactDelegate{
         treasures.handleInput(inputHelper)
     }
     
-    override func updateDelta(delta : NSTimeInterval){
-        if titleScreen.hidden && helpframe.hidden && gameover.hidden{
+    override func updateDelta(_ delta : TimeInterval){
+        if titleScreen.isHidden && helpframe.isHidden && gameover.isHidden{
             super.updateDelta(delta)
             treasures.updateDelta(delta)
         }
@@ -169,18 +189,18 @@ class GameWorld : GameObjectNode, SKPhysicsContactDelegate{
         self.counter = 0
     }
     
-    func isOutSizeWorld(pos : CGPoint) -> Bool{
+    func isOutSizeWorld(_ pos : CGPoint) -> Bool{
         return (pos.x < -size.width/2 || pos.x > size.width/2 || pos.y < -size.height/2)
     }
     
     // physics handling
-    func didBeginContact(contact: SKPhysicsContact) {
+    func didBegin(_ contact: SKPhysicsContact) {
         let firstBody = contact.bodyA.node as? Treasure
         let secondBody = contact.bodyB.node as? Treasure
         
         if firstBody?.position.y > 400 && secondBody?.position.y > 400{
             sndGameOver.play()
-            gameover.hidden = false
+            gameover.isHidden = false
             self.removeAllActions()
         }
         if firstBody == nil || secondBody == nil {

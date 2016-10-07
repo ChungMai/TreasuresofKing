@@ -13,9 +13,9 @@ class InputHelper{
     
     var touches : [Touch] = []
     var nrTouches = 0
-    var touchLocation = CGPointZero;
+    var touchLocation = CGPoint.zero;
     
-    func touchBegin(loc : CGPoint) -> Int
+    func touchBegin(_ loc : CGPoint) -> Int
     {
         var  touch = Touch()
         touch.location = loc
@@ -23,21 +23,21 @@ class InputHelper{
         return touch.id
     }
     
-    func touchMove(id : Int, loc : CGPoint){
+    func touchMove(_ id : Int, loc : CGPoint){
         if let index = findIndex(id){
             touches[index].location = loc
         }
     }
     
-    func touchEnd(id : Int)
+    func touchEnd(_ id : Int)
     {
         if let index = findIndex(id)
         {
-            touches.removeAtIndex(index)
+            touches.remove(at: index)
         }
     }
     
-    func findIndex(id: Int) -> Int?
+    func findIndex(_ id: Int) -> Int?
     {
         for index in 0..<touches.count{
             if id == touches[index].id{
@@ -47,14 +47,14 @@ class InputHelper{
         return nil
     }
     
-    func getTouch(id : Int) -> CGPoint {
+    func getTouch(_ id : Int) -> CGPoint {
         if let index = findIndex(id){
             return touches[index].location
         }
-        return CGPointZero
+        return CGPoint.zero
     }
     
-    func containTouch(rect : CGRect) -> Bool{
+    func containTouch(_ rect : CGRect) -> Bool{
         for touch in touches{
             if(rect.contains(touch.location)){
                 return true
@@ -64,7 +64,7 @@ class InputHelper{
         return false
     }
     
-    func getIdInRect(rect : CGRect) -> Int? {
+    func getIdInRect(_ rect : CGRect) -> Int? {
         for touch in touches{
             if(rect.contains(touch.location)){
                 return touch.id
@@ -74,11 +74,11 @@ class InputHelper{
         return nil
     }
     
-    func isTouching(id : Int) -> Bool {
+    func isTouching(_ id : Int) -> Bool {
         return findIndex(id) != nil
     }
     
-    func containsTap(rect : CGRect) -> Bool{
+    func containsTap(_ rect : CGRect) -> Bool{
         for touch in touches{
             if rect.contains(touch.location) && touch.tapped{
                 return true

@@ -17,11 +17,11 @@ class Glitter : GameObjectNode{
         self.xScale = 0
         self.yScale = 0
         addChild(sprite)
-        let waitAction = SKAction.waitForDuration(0.1, withRange: 0.2)
-        let scaleUpAction = SKAction.scaleTo(1, duration: 0.3)
-        let scaleDownAction = SKAction.scaleTo(0, duration: 0.3)
+        let waitAction = SKAction.wait(forDuration: 0.1, withRange: 0.2)
+        let scaleUpAction = SKAction.scale(to: 1, duration: 0.3)
+        let scaleDownAction = SKAction.scale(to: 0, duration: 0.3)
         let totalAction = SKAction.sequence([waitAction,scaleUpAction,scaleDownAction])
-        self.runAction(totalAction,completion: {
+        self.run(totalAction,completion: {
             self.removeFromParent()
         })
     }

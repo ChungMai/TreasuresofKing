@@ -12,8 +12,8 @@ class Sound{
     var audioPlayer : AVAudioPlayer?
     
     init(_ fileNamed : String){
-        let soundURL = NSBundle.mainBundle().URLForResource(fileNamed, withExtension: "mp3")
-        audioPlayer = try! AVAudioPlayer(contentsOfURL: soundURL!)
+        let soundURL = Bundle.main.url(forResource: fileNamed, withExtension: "mp3")
+        audioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
     }
     
     var volum : Float{

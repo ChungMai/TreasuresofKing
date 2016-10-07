@@ -13,7 +13,7 @@ class GameScene: SKScene {
     var inputHelper = InputHelper()
     var touchmap = [UITouch : Int]()
     static var world = GameWorld()
-    var delta : NSTimeInterval = 1/60
+    var delta : TimeInterval = 1/60
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -26,31 +26,31 @@ class GameScene: SKScene {
     }
     
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         /* Setup your scene here */
         anchorPoint = CGPoint(x:0.5, y: 0.5)
         view.frameInterval = 2
-        delta = NSTimeInterval (view.frameInterval)/60
+        delta = TimeInterval (view.frameInterval)/60
         self.addChild(GameScene.world)
         physicsWorld.contactDelegate = GameScene.world
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
-            touchmap[touch] = inputHelper.touchBegin(touch.locationInNode(self))
+            touchmap[touch] = inputHelper.touchBegin(touch.location(in: self))
         }
     }
    
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
             let touchId = touchmap[touch]!
-            inputHelper.touchMove(touchId, loc : touch.locationInNode(self))
+            inputHelper.touchMove(touchId, loc : touch.location(in: self))
         }
     }
     
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
             let touchId = touchmap[touch]!
             touchmap[touch] = nil
@@ -59,7 +59,7 @@ class GameScene: SKScene {
     }
     
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
         GameScene.world.handleInput(inputHelper)
         GameScene.world.updateDelta(delta)

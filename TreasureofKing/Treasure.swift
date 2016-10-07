@@ -9,6 +9,7 @@
 import Foundation
 import SpriteKit
 
+
 class Treasure : GameObjectNode{
     var sprite = SKSpriteNode()
     var touchId : Int? = nil;
@@ -25,19 +26,19 @@ class Treasure : GameObjectNode{
             sprite = SKSpriteNode(imageNamed: "spr_magic")
             self.type = TreasureType.Magic
             
-            let addGlitterAction = SKAction.runBlock({
+            let addGlitterAction = SKAction.run({
                 self.addGlitter()
             })
             
-            let waitAction = SKAction.waitForDuration(0.1)
-            let totalAction = SKAction.repeatActionForever(SKAction.sequence([addGlitterAction, waitAction]))
-            self.runAction(totalAction)
+            let waitAction = SKAction.wait(forDuration: 0.1)
+            let totalAction = SKAction.repeatForever(SKAction.sequence([addGlitterAction, waitAction]))
+            self.run(totalAction)
             
         }
         else{
-            action = SKAction.waitForDuration(20)
+            action = SKAction.wait(forDuration: 20)
             sprite = SKSpriteNode(imageNamed: "spr_treasure_\(type)")
-            self.runAction(action!, completion:{
+            self.run(action!, completion:{
                 let rock = Treasure(type:TreasureType.Rock)
                 rock.position = self.position
                 self.parent?.addChild(rock)
@@ -64,7 +65,7 @@ class Treasure : GameObjectNode{
     }
     
     
-    override func handleInput(inputHelper : InputHelper)
+    override func handleInput(_ inputHelper : InputHelper)
     {
         if position.y > 200{
             touchId = nil

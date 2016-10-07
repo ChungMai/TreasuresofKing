@@ -12,7 +12,7 @@ class Button : GameObjectNode{
     
     var tapped = false
     var sprite  = SKSpriteNode()
-    override func handleInput(inputHelper: InputHelper) {
+    override func handleInput(_ inputHelper: InputHelper) {
         super.handleInput(inputHelper)
         tapped = inputHelper.containsTap(self.box)
     }
