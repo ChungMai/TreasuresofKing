@@ -1,5 +1,5 @@
 ## TreasuresofKing
-![alt tag](https://github.com/ChungMai/Image/blob/master/Screen%20Shot%202016-10-07%20at%208.55.38%20PM.png)
+ ![alt tag](https://github.com/ChungMai/Image/blob/master/Screen%20Shot%202016-10-07%20at%208.55.38%20PM.png)
  * This is a game that implemented with Swift 3. 
  * The player have to collect the treasure of Pharaoh Tut. All kind of treasure falls down in the tomb and by dragging treasures 
  that are the same toward each other, you collect them and get points. 
